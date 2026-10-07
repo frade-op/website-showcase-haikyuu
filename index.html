@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haikyuu!! – Partida de Vôlei</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { background: #0b0b0f; }
+
+    /* Altura da rolagem = duração da animação */
+    .scroll { height: 500vh; }
+
+    .viewport {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Cena com a proporção real da quadra (1536x1024) que sempre COBRE a tela
+       (equivalente a background-size: cover). Elementos usam % da cena,
+       então mantêm proporção e alinhamento com o fundo. */
+    .scene {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: max(100vw, 150vh);
+      aspect-ratio: 1536 / 1024;
+      transform: translate(-50%, -50%);
+      transform-origin: 65% 60%;
+      will-change: transform;
+      isolation: isolate;
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    .court { inset: 0; width: 100%; height: 100%; z-index: 0; }
+
+    .shadow {
+      z-index: 1;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(40, 20, 0, .55) 0%, rgba(40, 20, 0, 0) 70%);
+      transform: translateX(-50%);
+    }
+    .shadow.kageyama { left: 40%; top: 94.5%; width: 15%; height: 3.4%; }
+    .shadow.hinata   { top: 94.8%; width: 11%; height: 2.6%; }
+    .shadow.ball     { top: 95%;   width: 3.5%; height: 1.2%; }
+
+    .kageyama { z-index: 2; left: 30%; bottom: 3.7%; height: 40.9%; }
+    .ball     { z-index: 3; height: 8.2%; }
+    .hinata   { z-index: 4; left: 65.2%; bottom: 19.9%; height: 37.8%; }
+
+    .ghost { opacity: 0; }
+
+    /* Linhas de velocidade */
+    .speed {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        repeating-linear-gradient(-28deg, transparent 0 46px, rgba(255,255,255,.35) 46px 48px, transparent 48px 120px);
+      -webkit-mask-image: radial-gradient(ellipse at 70% 45%, transparent 25%, #000 85%);
+              mask-image: radial-gradient(ellipse at 70% 45%, transparent 25%, #000 85%);
+    }
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: calc(min(60vw, 720px) - 15px);
+      transform: translate(calc(-50% + 9px), calc(-50% + 14px));
+      opacity: .55;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hint {
+      position: absolute;
+      left: 50%;
+      bottom: 4vh;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: #fff;
+      font: 600 14px/1 system-ui, sans-serif;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px #000;
+      transition: opacity .3s;
+    }
+    .hint::after { content: "↓"; display: block; text-align: center; margin-top: 8px; font-size: 20px; animation: bob 1.2s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(6px); } }
+  </style>
+</head>
+<body>
+  <div class="scroll" id="scroll">
+    <div class="viewport">
+      <div class="scene" id="sceneBack">
+        <img class="layer court" src="Images/quadra.png" alt="Quadra de vôlei">
+
+        <span class="layer shadow kageyama"></span>
+        <span class="layer shadow hinata" id="shHinata"></span>
+        <span class="layer shadow ball" id="shBall"></span>
+      </div>
+
+      <img class="logo" src="Images/haikyuu.png" alt="Haikyuu!!">
+
+      <main class="scene" id="scene" aria-label="Partida de vôlei: Kageyama levanta para Hinata atacar">
+        <img class="layer kageyama" id="kageyama" src="Images/kageyama.png" alt="Kageyama, o levantador">
+        <img class="layer ball"     id="ball"     src="Images/bola.png"     alt="Bola de vôlei">
+        <img class="layer hinata"   id="hinata"   src="Images/hinata.png"   alt="Hinata, o atacante">
+
+        <div class="speed" id="speed"></div>
+      </main>
+      <div class="hint" id="hint">Role para baixo</div>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const scene = $('scene'), sceneBack = $('sceneBack'), ball = $('ball'), hinata = $('hinata'), kageyama = $('kageyama');
+    const shK = document.querySelector('.shadow.kageyama');
+    const shH = $('shHinata'), shB = $('shBall'), speed = $('speed'), hint = $('hint');
+
+    const GHOSTS = 6;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const easeOut = t => 1 - Math.pow(1 - t, 2.2);
+
+    // Fantasmas (rastro de movimento) atrás da bola e do Hinata
+    function makeGhosts(el) {
+      return Array.from({ length: GHOSTS }, () => {
+        const g = el.cloneNode();
+        g.removeAttribute('id');
+        g.alt = '';
+        g.classList.add('ghost');
+        el.before(g);
+        return g;
+      });
+    }
+    const ballGhosts = makeGhosts(ball);
+    const hinataGhosts = makeGhosts(hinata);
+
+    // Posição da bola (centro, em % da cena): sai das mãos do Kageyama e vai até o Hinata, em arco
+    function ballAt(t) {
+      return {
+        x: lerp(42, 75.8, t),
+        y: lerp(56, 40.5, t) - 12 * Math.sin(Math.PI * t) * (1 - t * .35),
+        s: lerp(1.25, 1, t)
+      };
+    }
+    // Hinata: sai do chão (atrás/esquerda) e sobe para o lado até a posição de ataque
+    function hinataAt(h) {
+      return { x: lerp(-80, 12, h), y: lerp(48, 0, h) };
+    }
+
+    function placeBall(el, t, alpha) {
+      const b = ballAt(t);
+      el.style.left = b.x + '%';
+      el.style.top = b.y + '%';
+      el.style.transform = `translate(calc(-50% - ${70 * (1 - t)}px), -50%) scale(${b.s}) rotate(${t * 900}deg)`;
+      if (alpha !== undefined) el.style.opacity = alpha;
+    }
+    function placeHinata(el, p, alpha) {
+      const h = hinataAt(easeOut(p));
+      el.style.transform = `translate(${h.x}%, ${h.y}%)`;
+      if (alpha !== undefined) el.style.opacity = alpha;
+    }
+
+    let target = 0, cur = 0, prev = 0;
+
+    function readScroll() {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      target = max > 0 ? clamp(scrollY / max) : 0;
+    }
+
+    function frame() {
+      cur += (target - cur) * 0.12;
+      if (Math.abs(target - cur) < 0.0002) cur = target;
+      const vel = cur - prev;          // velocidade por frame (com sinal)
+      prev = cur;
+      const spd = clamp(Math.abs(vel) * 70);
+      const dir = Math.sign(vel) || 1;
+
+      // Câmera: leve zoom e deslocamento (parallax do fundo)
+      const camera = `translate(-50%, -50%) scale(${1 + cur * 0.14}) translate(${-cur * 1.5}%, ${cur * 1}%)`;
+      scene.style.transform = sceneBack.style.transform = camera;
+
+      // Profundidade: Kageyama (mais perto) sobe um pouco mais que o fundo
+      kageyama.style.transform = `translate(${-70 - cur * 80}px, ${-cur * 2.5}%)`;
+
+      shK.style.transform = `translateX(calc(-50% + ${-70 - cur * 80}px))`;
+      placeBall(ball, cur);
+      placeHinata(hinata, cur);
+
+      // Rastros proporcionais à velocidade
+      ballGhosts.forEach((g, i) => {
+        const k = (i + 1) * 0.012 * spd * 3;
+        placeBall(g, clamp(cur - dir * k), spd * 0.45 * (1 - i / GHOSTS));
+      });
+      hinataGhosts.forEach((g, i) => {
+        const k = (i + 1) * 0.02 * spd * 3;
+        placeHinata(g, clamp(cur - dir * k), spd * 0.3 * (1 - i / GHOSTS));
+      });
+
+      // Sombras no chão acompanham o deslocamento horizontal e encolhem com a altura
+      const h = easeOut(cur);
+      shH.style.left = lerp(60, 75, h) + '%';
+      shH.style.transform = `translateX(-50%) scale(${lerp(1, .6, h)})`;
+      shH.style.opacity = lerp(.9, .55, h);
+      shB.style.left = ballAt(cur).x + '%';
+      shB.style.transform = `translateX(-50%) scale(${lerp(.9, .5, Math.sin(Math.PI * cur))})`;
+      shB.style.opacity = .4;
+
+      speed.style.opacity = clamp(spd * 0.9) ;
+      hint.style.opacity = clamp(1 - cur * 12);
+
+      requestAnimationFrame(frame);
+    }
+
+    addEventListener('scroll', readScroll, { passive: true });
+    addEventListener('resize', readScroll);
+    readScroll();
+    cur = prev = target;
+    requestAnimationFrame(frame);
+  </script>
+</body>
+</html>
+
+
+
+

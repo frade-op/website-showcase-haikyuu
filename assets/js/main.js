@@ -19,6 +19,13 @@ const KAGEYAMA_START_X = -70;   // px
 const KAGEYAMA_TRAVEL_X = -80;  // px percorridos durante a rolagem
 const KAGEYAMA_RISE_Y = -2.5;   // % da altura dele (profundidade/parallax)
 
+// Câmera no celular (retrato): foco em % da largura da cena
+const MOBILE_QUERY = '(max-width: 700px) and (orientation: portrait)';
+const MOBILE_FOCUS_START = 38;  // perto do Kageyama
+const MOBILE_FOCUS_END = 68;    // perto do Hinata
+const MOBILE_CAMERA_ZOOM = 0.05;
+const CAMERA_ORIGIN_X = 65;     // transform-origin da cena (CSS), em %
+
 const BALL_SPIN = 900;          // graus de rotação até o fim
 const BALL_START_OFFSET_X = 70; // px de deslocamento extra no início
 
@@ -42,6 +49,8 @@ const hint = byId('hint');
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 const easeOut = t => 1 - Math.pow(1 - t, 2.2);
+const easeInOut = t => t * t * (3 - 2 * t);
+const mobileQuery = matchMedia(MOBILE_QUERY);
 
 /* ---------- Trajetórias ---------- */
 
@@ -105,14 +114,23 @@ let target = 0;   // progresso real da rolagem
 let current = 0;  // progresso suavizado exibido
 let previous = 0; // progresso do frame anterior
 
+// O progresso considera apenas o banner; seções abaixo dele não afetam a animação.
 function readScroll() {
-  const max = document.documentElement.scrollHeight - innerHeight;
+  const max = byId('scroll').offsetHeight - innerHeight;
   target = max > 0 ? clamp(scrollY / max) : 0;
 }
 
+// No celular em retrato só cabe ~1/3 da cena: a câmera acompanha a ação,
+// do Kageyama (esquerda) até o Hinata (direita), sem exigir alinhamento exato com o passe.
+function mobileShiftX(progress, zoom) {
+  const focus = lerp(MOBILE_FOCUS_START, MOBILE_FOCUS_END, easeInOut(progress));
+  return (50 - CAMERA_ORIGIN_X) / zoom + CAMERA_ORIGIN_X - focus;
+}
+
 function updateCamera(progress) {
-  const zoom = 1 + progress * CAMERA_ZOOM;
-  const shiftX = progress * CAMERA_SHIFT_X;
+  const isMobile = mobileQuery.matches;
+  const zoom = 1 + progress * (isMobile ? MOBILE_CAMERA_ZOOM : CAMERA_ZOOM);
+  const shiftX = isMobile ? mobileShiftX(progress, zoom) : progress * CAMERA_SHIFT_X;
   const shiftY = progress * CAMERA_SHIFT_Y;
   const transform =
     `translate(-50%, -50%) scale(${zoom}) translate(${shiftX}%, ${shiftY}%)`;
@@ -176,6 +194,17 @@ function frame() {
   hint.style.opacity = clamp(1 - current * 12);
 
   requestAnimationFrame(frame);
+}
+
+/* ---------- Figurinhas: fade-in/out conforme a seção entra e sai da tela ---------- */
+
+const about = byId('about');
+
+if ('IntersectionObserver' in window) {
+  about.classList.add('has-reveal');
+  new IntersectionObserver(([entry]) => {
+    about.classList.toggle('is-visible', entry.isIntersecting);
+  }, { threshold: 0.15 }).observe(about);
 }
 
 /* ---------- Início ---------- */

@@ -4,7 +4,20 @@ Uma página de fã sobre *Haikyuu!!*, feita para praticar animações acionadas 
 
 ## Como visualizar
 
-Abra `index.html` em um navegador. O projeto usa HTML, CSS e JavaScript sem etapa de build ou dependências de instalação.
+O projeto usa HTML, CSS e JavaScript sem etapa de build ou dependências de instalação. Para ver tudo funcionando, sirva a pasta com um servidor local usando Python:
+
+```powershell
+cd caminho\para\Site-showcase-haikyuu
+python -m http.server 8000
+```
+
+Depois acesse <http://localhost:8000> no navegador. Para encerrar o servidor, pressione `Ctrl+C` no terminal. Se a porta 8000 estiver ocupada, use outra (por exemplo, `python -m http.server 8080`).
+
+### Por que usar um servidor local
+
+Abrir o `index.html` com duplo clique carrega a página por `file://`, e nesse modo o player do YouTube (seção "Cena") pode ser bloqueado, pois o vídeo é incorporado e o YouTube costuma recusar a incorporação quando a página não tem uma origem `http://` ou `https://`. Com `python -m http.server`, a página é servida em `http://localhost`, que é o mesmo cenário de uma hospedagem real. Assim, o que você vê no teste é o que o visitante verá. O Python já traz esse servidor embutido, então não é preciso instalar nada.
+
+Abrir o `index.html` direto continua funcionando para o banner e a seção "Sobre"; só o vídeo é afetado.
 
 ## Estrutura
 
@@ -29,14 +42,17 @@ Abra `index.html` em um navegador. O projeto usa HTML, CSS e JavaScript sem etap
 - **Celular (até 1300px):** as figurinhas ficam em duas linhas (topo e rodapé) e o texto desce para não cobri-las; até 600px elas ficam menores.
 - **Acessibilidade:** com `prefers-reduced-motion` ativo, quique e transições são desligados.
 
+### Trecho do anime (seção "Cena")
+
+- Vídeo: <https://www.youtube.com/watch?v=QArog-oWuDk> (ID `QArog-oWuDk`, definido em `data-video-id` no `index.html`).
+- Carregamento sob demanda: a página mostra só a miniatura do YouTube com botão de play; o player (`youtube-nocookie.com`) é criado ao clicar, então nada pesado carrega antes e não há reprodução automática.
+- Visual: moldura laranja do Karasuno com sombra deslocada, cantos de “câmera” e faixa de título, no mesmo estilo da seção "Sobre". O botão de play pulsa e ganha destaque ao passar o mouse ou focar com o teclado.
+- Se a miniatura em alta resolução não existir, usa-se a de qualidade menor; há também um link “Abrir no YouTube” como alternativa. O player pode não funcionar abrindo o arquivo direto (`file://`); veja [Como visualizar](#como-visualizar).
+
 ## Próximos passos
 
-Estas são ideias planejadas; ainda não fazem parte da página:
+Ideia planejada; ainda não faz parte da página:
 
-1. **Personagens e seus status/estatísticas** — criar uma seção com perfis dos personagens. Definir quais informações serão exibidas (por exemplo, time, posição e estatísticas) e apresentar os dados de forma clara e responsiva.
-2. **Trecho do anime** — adicionar uma seção para assistir a um trecho relacionado à série. Priorizar um vídeo ou incorporação de fonte oficial/autorizada, com controles acessíveis e sem reprodução automática.
-3. **Mangá e a passagem de Hinata pelo Brasil** — criar uma parte dedicada à história no mangá, incluindo o período em que Hinata treina e joga vôlei de praia no Brasil. Organizar o conteúdo para evitar spoilers ou sinalizá-los claramente.
+- **Mangá e a passagem de Hinata pelo Brasil** — criar uma parte dedicada à história no mangá, incluindo o período em que Hinata treina e joga vôlei de praia no Brasil. Definir as fontes das informações e das imagens e organizar o conteúdo para evitar spoilers ou sinalizá-los claramente.
 
-### Ordem sugerida
-
-Começar pela seção de personagens, pois ela estabelece o padrão de apresentação de conteúdo. Depois, adicionar o trecho do anime e, por fim, a seção sobre o mangá e a jornada de Hinata no Brasil. Antes de implementar, definir as fontes das informações e das mídias, além do nível de spoilers permitido.
+A seção de personagens e estatísticas foi descartada.

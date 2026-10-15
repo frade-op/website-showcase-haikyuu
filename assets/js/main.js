@@ -207,6 +207,27 @@ if ('IntersectionObserver' in window) {
   }, { threshold: 0.15 }).observe(about);
 }
 
+/* ---------- Trecho do anime: o player só é criado ao clicar ---------- */
+
+const clipPlayer = byId('clipPlayer');
+const clipThumb = byId('clipThumb');
+
+// Algumas miniaturas não existem em alta resolução
+clipThumb.addEventListener('error', () => {
+  const fallback = `https://i.ytimg.com/vi/${clipPlayer.dataset.videoId}/hqdefault.jpg`;
+  if (clipThumb.src !== fallback) clipThumb.src = fallback;
+}, { once: true });
+
+clipPlayer.querySelector('.clip__play').addEventListener('click', () => {
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube-nocookie.com/embed/${clipPlayer.dataset.videoId}?autoplay=1&rel=0`;
+  iframe.title = 'Trecho do anime Haikyuu!!';
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  iframe.allowFullscreen = true;
+  clipPlayer.classList.add('is-playing');
+  clipPlayer.replaceChildren(iframe);
+});
+
 /* ---------- Início ---------- */
 
 addEventListener('scroll', readScroll, { passive: true });

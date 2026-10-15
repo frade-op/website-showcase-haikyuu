@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* ==========================================================================
    Haikyuu!! – Partida de Vôlei
    Estrutura de camadas (de trás para frente):
@@ -367,4 +368,204 @@ html {
 
 .about__reasons p {
   font: 400 16px/1.65 system-ui, sans-serif;
+}
+
+/* ==========================================================================
+   Seção "Cena" – trecho do anime em moldura de câmera
+   ========================================================================== */
+
+.clip {
+  --orange: #f47a1f;
+  --orange-dark: #c95a0a;
+
+  position: relative;
+  padding: clamp(72px, 10vw, 140px) clamp(16px, 4vw, 24px);
+  color: #e9e6e1;
+  background:
+    linear-gradient(180deg, var(--orange) 0 6px, transparent 6px),
+    radial-gradient(ellipse at 50% 100%, rgba(244, 122, 31, 0.22), transparent 65%),
+    repeating-linear-gradient(-28deg, transparent 0 46px, rgba(255, 255, 255, 0.025) 46px 48px, transparent 48px 120px),
+    #0d0d0f;
+  overflow: hidden;
+}
+
+.clip__inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.clip__eyebrow {
+  margin-bottom: 12px;
+  color: var(--orange);
+  font: 700 13px/1 system-ui, sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.clip__title {
+  margin-bottom: clamp(28px, 5vw, 48px);
+  font: 800 clamp(30px, 6vw, 56px)/1.05 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.clip__title span {
+  color: var(--orange);
+}
+
+.clip__frame {
+  position: relative;
+  padding: clamp(8px, 1.4vw, 14px);
+  background: #17171b;
+  border: 3px solid var(--orange);
+  border-radius: 6px;
+  box-shadow:
+    clamp(8px, 1.6vw, 16px) clamp(8px, 1.6vw, 16px) 0 rgba(244, 122, 31, 0.22),
+    0 30px 80px rgba(0, 0, 0, 0.6);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.clip__frame:hover {
+  transform: translate(-3px, -3px);
+  box-shadow:
+    clamp(11px, 2vw, 19px) clamp(11px, 2vw, 19px) 0 rgba(244, 122, 31, 0.32),
+    0 36px 90px rgba(0, 0, 0, 0.65);
+}
+
+/* Cantos de enquadramento, como no visor de uma câmera */
+.clip__bracket {
+  position: absolute;
+  z-index: 2;
+  width: clamp(18px, 3vw, 30px);
+  height: clamp(18px, 3vw, 30px);
+  border: 0 solid #fff;
+  pointer-events: none;
+}
+
+.clip__bracket--tl { top: -12px;    left: -12px;  border-width: 4px 0 0 4px; }
+.clip__bracket--tr { top: -12px;    right: -12px; border-width: 4px 4px 0 0; }
+.clip__bracket--bl { bottom: -12px; left: -12px;  border-width: 0 0 4px 4px; }
+.clip__bracket--br { bottom: -12px; right: -12px; border-width: 0 4px 4px 0; }
+
+.clip__player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+
+.clip__thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.1) brightness(0.8);
+  transition: transform 0.6s ease, filter 0.4s ease;
+}
+
+.clip__player::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 55%);
+  pointer-events: none;
+}
+
+.clip__player.is-playing::after {
+  display: none;
+}
+
+.clip__player:hover .clip__thumb {
+  transform: scale(1.05);
+  filter: saturate(1.2) brightness(0.95);
+}
+
+.clip__player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.clip__play {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(64px, 11vw, 104px);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #0d0d0f;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 0 rgba(244, 122, 31, 0.6);
+  animation: pulse 2s ease-out infinite;
+  transition: background 0.2s, scale 0.2s;
+}
+
+.clip__play svg {
+  width: 46%;
+  fill: currentColor;
+  transform: translateX(8%);
+}
+
+.clip__play:hover,
+.clip__play:focus-visible {
+  background: #fff;
+  scale: 1.1;
+  outline: none;
+}
+
+.clip__play:focus-visible {
+  box-shadow: 0 0 0 4px var(--orange);
+}
+
+@keyframes pulse {
+  to { box-shadow: 0 0 0 28px rgba(244, 122, 31, 0); }
+}
+
+.clip__tag {
+  position: absolute;
+  z-index: 1;
+  left: 14px;
+  bottom: 12px;
+  color: #fff;
+  font: 700 12px/1 system-ui, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 6px #000;
+}
+
+.clip__caption {
+  margin-top: clamp(28px, 4vw, 40px);
+  font: 400 16px/1.6 system-ui, sans-serif;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.clip__caption a {
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--orange);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+}
+
+.clip__caption a:hover {
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clip__play { animation: none; }
+  .clip__frame,
+  .clip__thumb { transition: none; }
 }

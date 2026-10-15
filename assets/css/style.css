@@ -569,3 +569,469 @@ html {
   .clip__frame,
   .clip__thumb { transition: none; }
 }
+
+/* ==========================================================================
+   Seção "Mangá" – página de mangá: papel, tinta preta e retícula de pontos
+   ========================================================================== */
+
+.manga {
+  --ink: #0b0b0d;
+  --paper: #f6f2e8;
+  --orange: #f47a1f;
+
+  position: relative;
+  padding: clamp(72px, 10vw, 140px) clamp(16px, 4vw, 24px);
+  color: var(--ink);
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.13) 1.2px, transparent 1.6px) 0 0 / 14px 14px,
+    var(--paper);
+  border-top: 8px solid var(--ink);
+  overflow: hidden;
+}
+
+.manga__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Onomatopeias decorativas */
+.manga__sfx {
+  position: absolute;
+  z-index: 0;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(11, 11, 13, 0.22);
+  font: 900 clamp(90px, 16vw, 220px)/1 system-ui, sans-serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.manga__sfx--1 { top: 2%;     right: 3%; transform: rotate(8deg); }
+.manga__sfx--2 { bottom: 3%;  left: 2%;  transform: rotate(-9deg); }
+
+.manga__eyebrow {
+  margin-bottom: 14px;
+  font: 800 13px/1 system-ui, sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.manga__title {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto 18px;
+  padding: 8px 28px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 900 clamp(36px, 8vw, 76px)/1 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transform: skew(-6deg) rotate(-1.5deg);
+  box-shadow: 8px 8px 0 var(--orange);
+}
+
+.manga__title span {
+  color: var(--orange);
+}
+
+.manga__lead {
+  max-width: 640px;
+  margin: 28px auto 36px;
+  font: 500 18px/1.6 system-ui, sans-serif;
+  text-align: center;
+}
+
+/* ---------- Alerta de spoiler ---------- */
+
+.spoiler {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 24px 32px;
+  background: #fff;
+  border: 4px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+  text-align: center;
+  background-image: repeating-linear-gradient(-45deg, #fff 0 14px, #ffd9b8 14px 28px);
+  background-size: 100% 12px;
+  background-repeat: repeat-x;
+  background-position: top;
+}
+
+.spoiler > * + * { margin-top: 12px; }
+
+.spoiler > :first-child { margin-top: 6px; }
+
+.spoiler__icon {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.spoiler__title {
+  font: 900 28px/1 system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.spoiler p {
+  font: 500 16px/1.6 system-ui, sans-serif;
+}
+
+.spoiler__button {
+  margin-top: 20px;
+  padding: 14px 28px;
+  border: 3px solid var(--ink);
+  background: var(--orange);
+  color: var(--ink);
+  font: 900 15px/1 system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.spoiler__button:hover,
+.spoiler__button:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+  outline: none;
+}
+
+.spoiler__button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.spoiler__button:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+/* ---------- Quadros ---------- */
+
+.manga__story > * + * {
+  margin-top: clamp(28px, 4vw, 44px);
+}
+
+.manga__story {
+  animation: pageIn 0.7s ease both;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(24px); }
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(14px, 2.4vw, 24px);
+}
+
+.panels--three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.panel {
+  position: relative;
+  padding: clamp(18px, 3vw, 28px);
+  background: #fff;
+  border: 4px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.panel:hover {
+  transform: translate(-3px, -3px) rotate(-0.4deg);
+  box-shadow: 11px 11px 0 var(--ink);
+}
+
+.panel--wide {
+  grid-column: 1 / -1;
+}
+
+.panel--dark {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  box-shadow: 8px 8px 0 var(--orange);
+}
+
+.panel--dark:hover {
+  box-shadow: 11px 11px 0 var(--orange);
+}
+
+.panel--accent {
+  background: var(--orange);
+  background-image: repeating-linear-gradient(-28deg, transparent 0 26px, rgba(0, 0, 0, 0.12) 26px 28px);
+}
+
+.panel__no {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 900 14px/1 system-ui, sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.panel--dark .panel__no {
+  background: var(--orange);
+  color: var(--ink);
+}
+
+.panel__title {
+  margin-bottom: 10px;
+  font: 900 clamp(20px, 3vw, 26px)/1.15 system-ui, sans-serif;
+  text-transform: uppercase;
+}
+
+.panel p {
+  font: 500 16px/1.65 system-ui, sans-serif;
+}
+
+.panel p + p {
+  margin-top: 10px;
+}
+
+.panel .panel__source {
+  font: 700 12px/1.4 system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.panel__list {
+  margin-top: 14px;
+  padding-left: 20px;
+  font: 500 15px/1.6 system-ui, sans-serif;
+}
+
+.panel__list li + li { margin-top: 6px; }
+
+.panel__list li::marker { color: var(--orange); }
+
+/* ---------- Subtítulos ---------- */
+
+.manga__subtitle {
+  font: 900 clamp(26px, 5vw, 44px)/1.1 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.manga__subtitle span {
+  color: var(--orange);
+  -webkit-text-stroke: 2px var(--ink);
+}
+
+/* ---------- Quadra × Praia ---------- */
+
+.versus {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 3vw, 32px);
+}
+
+.versus__col {
+  padding: clamp(18px, 3vw, 28px);
+  background: #fff;
+  border: 4px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+  clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+}
+
+.versus__col--sand {
+  background: #ffe9c7;
+  clip-path: polygon(4% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.versus__col h4 {
+  margin-bottom: 12px;
+  font: 900 22px/1.1 system-ui, sans-serif;
+  text-transform: uppercase;
+}
+
+.versus__col ul {
+  padding-left: 20px;
+  font: 500 15px/1.6 system-ui, sans-serif;
+}
+
+.versus__col li + li { margin-top: 8px; }
+
+.versus__vs {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: clamp(48px, 7vw, 72px);
+  aspect-ratio: 1;
+  background: var(--orange);
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  font: 900 clamp(18px, 3vw, 26px)/1 system-ui, sans-serif;
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+
+/* ---------- Destaque final ---------- */
+
+.manga__why {
+  padding: clamp(22px, 4vw, 36px);
+  background: var(--ink);
+  color: var(--paper);
+  border: 4px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--orange);
+  background-image: repeating-linear-gradient(-28deg, transparent 0 46px, rgba(255, 255, 255, 0.05) 46px 48px);
+}
+
+.manga__why h3 {
+  margin-bottom: 14px;
+  color: var(--orange);
+  font: 900 clamp(24px, 4vw, 34px)/1.1 system-ui, sans-serif;
+  text-transform: uppercase;
+}
+
+.manga__why p {
+  font: 500 17px/1.7 system-ui, sans-serif;
+}
+
+.manga__why .manga__final {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 2px dashed rgba(246, 242, 232, 0.4);
+  font-weight: 800;
+}
+
+.manga__source {
+  font: 600 12px/1.5 system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-align: center;
+  opacity: 0.65;
+}
+
+/* ---------- Rivalidade: Black Jackals × Adlers ---------- */
+
+.rival {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 3vw, 32px);
+}
+
+.rival__team {
+  padding: clamp(22px, 4vw, 36px) clamp(16px, 3vw, 28px);
+  border: 4px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+  text-align: center;
+}
+
+.rival__team--jackals {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 8px 8px 0 var(--orange);
+  clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+}
+
+.rival__team--adlers {
+  background: #fff;
+  clip-path: polygon(4% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.rival__who {
+  margin-bottom: 8px;
+  font: 800 13px/1 system-ui, sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.rival__team--adlers .rival__who {
+  color: var(--ink);
+}
+
+.rival__team h4 {
+  font: 900 clamp(22px, 4vw, 34px)/1.1 system-ui, sans-serif;
+  text-transform: uppercase;
+}
+
+.rival__text {
+  max-width: 720px;
+  margin-inline: auto;
+  font: 500 17px/1.7 system-ui, sans-serif;
+  text-align: center;
+}
+
+/* ---------- Botão de idioma ---------- */
+
+.lang-toggle {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 100;
+  min-width: 52px;
+  padding: 10px 14px;
+  border: 3px solid #0b0b0d;
+  background: #f47a1f;
+  color: #0b0b0d;
+  font: 900 14px/1 system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #0b0b0d;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.lang-toggle:hover,
+.lang-toggle:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #0b0b0d;
+  outline: none;
+}
+
+.lang-toggle:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.lang-toggle:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #0b0b0d;
+}
+
+@media (max-width: 760px) {
+  .panels,
+  .panels--three,
+  .versus,
+  .rival {
+    grid-template-columns: 1fr;
+  }
+
+  /* No celular o “VS” fica entre as colunas empilhadas */
+  .versus__vs {
+    position: relative;
+    left: auto;
+    top: 4px;
+    transform: rotate(-8deg);
+    justify-self: center;
+    width: 56px;
+    margin-block: -28px;
+  }
+
+  .versus__col,
+  .versus__col--sand,
+  .rival__team--jackals,
+  .rival__team--adlers {
+    clip-path: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manga__story { animation: none; }
+  .panel,
+  .spoiler__button,
+  .lang-toggle { transition: none; }
+}

@@ -21,10 +21,11 @@ Abrir o `index.html` direto continua funcionando para o banner e a seção "Sobr
 
 ## Estrutura
 
-- `index.html`: marcação da cena animada e da seção “Sobre”.
-- `assets/css/style.css`: composição visual, camadas, layout responsivo e estilos da seção de conteúdo.
-- `assets/js/main.js`: animação da jogada, sincronizada com a rolagem.
-- `Images/`: imagens usadas na cena e nos elementos decorativos.
+- `index.html`: marcação da cena animada e das seções (Sobre, Cena, Mangá).
+- `assets/css/style.css`: composição visual, camadas, layout responsivo e estilos das seções.
+- `assets/js/main.js`: animação da jogada, sincronizada com a rolagem, e interações das seções.
+- `assets/js/i18n.js`: troca de idioma (PT/EN).
+- `Images/`: imagens usadas na cena, nos elementos decorativos e o favicon.
 
 ## Comportamento e efeitos
 
@@ -49,10 +50,30 @@ Abrir o `index.html` direto continua funcionando para o banner e a seção "Sobr
 - Visual: moldura laranja do Karasuno com sombra deslocada, cantos de “câmera” e faixa de título, no mesmo estilo da seção "Sobre". O botão de play pulsa e ganha destaque ao passar o mouse ou focar com o teclado.
 - Se a miniatura em alta resolução não existir, usa-se a de qualidade menor; há também um link “Abrir no YouTube” como alternativa. O player pode não funcionar abrindo o arquivo direto (`file://`); veja [Como visualizar](#como-visualizar).
 
+### Mangá: Hinata no Brasil (seção "Mangá")
+
+- **Estilo:** página de mangá, com papel claro, retícula de pontos, quadros de borda preta grossa e sombra dura, onomatopeias decorativas ao fundo e laranja como único acento.
+- **Alerta de spoiler:** com JavaScript, o conteúdo fica oculto até o clique em “Já li, mostrar” (`#spoilerGate`, `#mangaStory`, `aria-expanded`). Sem JavaScript, o conteúdo fica visível.
+- **Conteúdo:** a chegada ao Brasil, a duração da estadia e as dificuldades, o apelido “Ninja Shoyo”, a comparação entre vôlei de quadra e de praia, o que Hinata trouxe de volta e por que o Brasil é importante na história. Fontes: capítulos 371, 376 e 377 do mangá (conferidos na wiki da série). Ao editar o texto, evite afirmações que não estejam nos capítulos.
+- **Celular (até 760px):** os quadros viram uma coluna só e a comparação é empilhada; o selo “VS” fica centralizado na faixa entre os dois blocos (grid, sem posicionamento absoluto).
+- **Rivalidade:** bloco “Uma rivalidade saudável” com Hinata (MSBY Black Jackals) × Kageyama (Schweiden Adlers). Atenção: o Kageyama joga no **Schweiden Adlers**, não no Black Jackals; a rivalidade vem do confronto entre os dois times na V.League (conferido na wiki da série).
+- **Acessibilidade:** com `prefers-reduced-motion` ativo, a entrada animada e as transições são desligadas.
+
+### Idiomas (PT/EN)
+
+- O botão fixo no canto superior direito alterna entre português e inglês. A escolha é salva no navegador (`localStorage`, chave `haikyuu-lang`); na primeira visita, usa-se o idioma do navegador (inglês se começar com `en`, senão português).
+- O texto em português fica no próprio `index.html` (assim a página funciona mesmo sem JavaScript). As traduções para inglês ficam no objeto `EN` de `assets/js/i18n.js`.
+- Para traduzir um novo trecho: adicione `data-i18n="chave"` ao elemento (aceita `<span>` e `<em>`), ou `data-i18n-alt` / `data-i18n-aria` para os atributos `alt` e `aria-label`, e crie a mesma chave em `EN`. Chave sem tradução cai no português.
+- O atributo `lang` do `<html>` muda junto (`pt-BR` / `en`). O título da aba é sempre “Haikyuu”.
+
+### Aba do navegador
+
+- Título: “Haikyuu”.
+- Favicon: `Images/favicon.png` (128 × 128), gerado a partir de `Images/bola.png`, a bola do banner.
+
 ## Próximos passos
 
-Ideia planejada; ainda não faz parte da página:
+Todas as seções planejadas já foram implementadas. Ideias futuras:
 
-- **Mangá e a passagem de Hinata pelo Brasil** — criar uma parte dedicada à história no mangá, incluindo o período em que Hinata treina e joga vôlei de praia no Brasil. Definir as fontes das informações e das imagens e organizar o conteúdo para evitar spoilers ou sinalizá-los claramente.
-
-A seção de personagens e estatísticas foi descartada.
+- Adicionar imagens ou ilustrações próprias na seção do mangá (as páginas originais têm direitos autorais, então use apenas material autorizado).
+- Revisar o texto com atenção aos spoilers e à fidelidade aos capítulos.

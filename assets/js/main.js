@@ -98,6 +98,7 @@ function createGhosts(element) {
   return Array.from({ length: GHOST_COUNT }, () => {
     const ghost = element.cloneNode();
     ghost.removeAttribute('id');
+    ghost.removeAttribute('data-i18n-alt');
     ghost.alt = '';
     ghost.classList.add('ghost');
     element.before(ghost);
@@ -221,11 +222,28 @@ clipThumb.addEventListener('error', () => {
 clipPlayer.querySelector('.clip__play').addEventListener('click', () => {
   const iframe = document.createElement('iframe');
   iframe.src = `https://www.youtube-nocookie.com/embed/${clipPlayer.dataset.videoId}?autoplay=1&rel=0`;
-  iframe.title = 'Trecho do anime Haikyuu!!';
+  iframe.title = i18n.t('clip.iframe');
   iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
   iframe.allowFullscreen = true;
   clipPlayer.classList.add('is-playing');
   clipPlayer.replaceChildren(iframe);
+});
+
+/* ---------- Mangá: alerta de spoiler ---------- */
+
+const mangaStory = byId('mangaStory');
+const spoilerGate = byId('spoilerGate');
+const spoilerButton = byId('spoilerButton');
+
+// Sem JS o conteúdo fica visível; com JS ele só aparece depois da confirmação
+spoilerGate.hidden = false;
+mangaStory.hidden = true;
+
+spoilerButton.addEventListener('click', () => {
+  mangaStory.hidden = false;
+  spoilerGate.hidden = true;
+  spoilerButton.setAttribute('aria-expanded', 'true');
+  mangaStory.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
 /* ---------- Início ---------- */

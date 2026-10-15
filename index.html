@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haikyuu!! – Partida de Vôlei</title>
+  <title>Haikyuu</title>
+  <link rel="icon" type="image/png" sizes="128x128" href="Images/favicon.png">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+  <!-- O texto em português fica no HTML; as traduções ficam em assets/js/i18n.js -->
+  <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to English">EN</button>
+
   <div class="scroll" id="scroll">
     <div class="viewport">
       <!-- Fundo: quadra e sombras -->
       <div class="scene" id="sceneBack">
-        <img class="layer court" src="Images/quadra.png" alt="Quadra de vôlei">
+        <img class="layer court" src="Images/quadra.png" alt="Quadra de vôlei" data-i18n-alt="court.alt">
 
         <span class="layer shadow kageyama"></span>
         <span class="layer shadow hinata" id="shHinata"></span>
@@ -24,43 +28,42 @@
       <img class="logo" src="Images/haikyuu.png" alt="Haikyuu!!">
 
       <!-- Frente: personagens e bola -->
-      <main class="scene" id="scene" aria-label="Partida de vôlei: Kageyama levanta para Hinata atacar">
-        <img class="layer kageyama" id="kageyama" src="Images/kageyama.png" alt="Kageyama, o levantador">
-        <img class="layer ball"     id="ball"     src="Images/bola.png"     alt="Bola de vôlei">
-        <img class="layer hinata"   id="hinata"   src="Images/hinata.png"   alt="Hinata, o atacante">
+      <main class="scene" id="scene" aria-label="Partida de vôlei: Kageyama levanta para Hinata atacar" data-i18n-aria="scene.aria">
+        <img class="layer kageyama" id="kageyama" src="Images/kageyama.png" alt="Kageyama, o levantador" data-i18n-alt="kageyama.alt">
+        <img class="layer ball"     id="ball"     src="Images/bola.png"     alt="Bola de vôlei" data-i18n-alt="ball.alt">
+        <img class="layer hinata"   id="hinata"   src="Images/hinata.png"   alt="Hinata, o atacante" data-i18n-alt="hinata.alt">
 
         <div class="speed" id="speed"></div>
       </main>
 
-      <div class="hint" id="hint">Role para baixo</div>
+      <div class="hint" id="hint" data-i18n="hint">Role para baixo</div>
     </div>
   </div>
 
   <section class="about" id="about">
-    <!-- Cantos: troque o conteúdo de cada .corner__slot por uma <img> ou outro elemento -->
     <figure class="corner corner--tl">
-      <img src="Images/corner-tl.png" alt="Sticker de nishinoya">
+      <img src="Images/corner-tl.png" alt="Sticker de nishinoya" data-i18n-alt="corner.tl">
     </figure>
     <figure class="corner corner--tr">
-      <img src="Images/corner-tr.png" alt="Sticker de yachi">
+      <img src="Images/corner-tr.png" alt="Sticker de yachi" data-i18n-alt="corner.tr">
     </figure>
     <figure class="corner corner--bl">
-      <img src="Images/corner-bl.png" alt="Sticker de daichi">
+      <img src="Images/corner-bl.png" alt="Sticker de daichi" data-i18n-alt="corner.bl">
     </figure>
     <figure class="corner corner--br">
-      <img src="Images/corner-br.png" alt="Sticker de tsukishima">
+      <img src="Images/corner-br.png" alt="Sticker de tsukishima" data-i18n-alt="corner.br">
     </figure>
 
     <div class="about__content">
       <p class="about__eyebrow">Karasuno · 烏野</p>
 
       <article class="about__block">
-        <h2 class="about__title">O que é <span>Haikyuu!!</span></h2>
-        <p>
+        <h2 class="about__title" data-i18n="about.title1">O que é <span>Haikyuu!!</span></h2>
+        <p data-i18n="about.p1">
           Haikyuu!! é um mangá esportivo de Haruichi Furudate, publicado na Weekly Shōnen Jump
           entre 2012 e 2020 e adaptado em anime pelo estúdio Production I.G.
         </p>
-        <p>
+        <p data-i18n="about.p2">
           A história acompanha Shoyo Hinata, um garoto baixo, mas com um salto extraordinário, e
           Tobio Kageyama, um levantador genial. Juntos no time de vôlei do colégio Karasuno, eles
           precisam transformar rivalidade em parceria para chegar ao topo.
@@ -68,32 +71,32 @@
       </article>
 
       <article class="about__block">
-        <h2 class="about__title">Por que <span>falar dele</span></h2>
+        <h2 class="about__title" data-i18n="about.title2">Por que <span>falar dele</span></h2>
         <ul class="about__reasons">
           <li>
-            <h3>Uma história que vale a pena</h3>
-            <p>
+            <h3 data-i18n="why1.h">Uma história que vale a pena</h3>
+            <p data-i18n="why1.p">
               Personagens cativantes, roteiro bem construído e lições de vida muito úteis.
               A superação aqui não é clichê nem irreal: ter amigos não resolve tudo. É uma
               história pé no chão e, ainda assim, otimista.
             </p>
           </li>
           <li>
-            <h3>Ensina vôlei de verdade</h3>
-            <p>
+            <h3 data-i18n="why2.h">Ensina vôlei de verdade</h3>
+            <p data-i18n="why2.p">
               O anime explica o esporte e deixa quem assiste vidrado e torcendo, como numa final
               de Copa do Mundo ou num jogo da seleção masculina do Brasil no auge.
             </p>
           </li>
           <li>
-            <h3>Um dos meus favoritos</h3>
-            <p>
+            <h3 data-i18n="why3.h">Um dos meus favoritos</h3>
+            <p data-i18n="why3.p">
               Só perde para One Piece na minha lista de animes favoritos.
             </p>
           </li>
           <li>
-            <h3>Mais projetos no portfólio</h3>
-            <p>
+            <h3 data-i18n="why4.h">Mais projetos no portfólio</h3>
+            <p data-i18n="why4.p">
               Eu queria ter mais projetos para mostrar, e este foi um jeito divertido de
               praticar animações com rolagem usando um tema que eu gosto.
             </p>
@@ -105,8 +108,8 @@
 
   <section class="clip" id="clip" aria-labelledby="clipTitle">
     <div class="clip__inner">
-      <p class="clip__eyebrow">Cena · 場面</p>
-      <h2 class="clip__title" id="clipTitle">Direto da <span>quadra</span></h2>
+      <p class="clip__eyebrow" data-i18n="clip.eyebrow">Cena · 場面</p>
+      <h2 class="clip__title" id="clipTitle" data-i18n="clip.title">Direto da <span>quadra</span></h2>
 
       <div class="clip__frame">
         <span class="clip__bracket clip__bracket--tl"></span>
@@ -117,7 +120,7 @@
         <div class="clip__player" id="clipPlayer" data-video-id="QArog-oWuDk">
           <img class="clip__thumb" id="clipThumb" alt=""
                src="https://i.ytimg.com/vi/QArog-oWuDk/maxresdefault.jpg" loading="lazy">
-          <button class="clip__play" type="button" aria-label="Reproduzir o trecho do anime">
+          <button class="clip__play" type="button" aria-label="Reproduzir o trecho do anime" data-i18n-aria="clip.play">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
           </button>
           <span class="clip__tag">REC ● Karasuno</span>
@@ -125,12 +128,165 @@
       </div>
 
       <p class="clip__caption">
-        Um trecho do anime para sentir a velocidade do jogo.
-        <a href="https://www.youtube.com/watch?v=QArog-oWuDk" target="_blank" rel="noopener noreferrer">Abrir no YouTube ↗</a>
+        <span data-i18n="clip.caption">Um trecho do anime para sentir a velocidade do jogo.</span>
+        <a href="https://www.youtube.com/watch?v=QArog-oWuDk" target="_blank" rel="noopener noreferrer" data-i18n="clip.link">Abrir no YouTube ↗</a>
       </p>
     </div>
   </section>
 
+  <section class="manga" id="manga" aria-labelledby="mangaTitle">
+    <span class="manga__sfx manga__sfx--1" aria-hidden="true">ザッ</span>
+    <span class="manga__sfx manga__sfx--2" aria-hidden="true">ドン!</span>
+
+    <div class="manga__inner">
+      <p class="manga__eyebrow" data-i18n="manga.eyebrow">Mangá · 漫画 · Arco final</p>
+      <h2 class="manga__title" id="mangaTitle" data-i18n="manga.title">Hinata no <span>Brasil</span></h2>
+      <p class="manga__lead" data-i18n="manga.lead">
+        Na reta final do mangá, Hinata cruza o mundo para aprender uma versão diferente do
+        esporte que ama: o vôlei de praia.
+      </p>
+
+      <div class="spoiler" id="spoilerGate" hidden>
+        <p class="spoiler__icon" aria-hidden="true">⚠</p>
+        <h3 class="spoiler__title" data-i18n="spoiler.title">Alerta de spoiler</h3>
+        <p data-i18n="spoiler.p">
+          Esta seção conta eventos do arco final do mangá (capítulos 371 a 377), incluindo o
+          destino de Hinata depois do colégio. Se você ainda não leu, é melhor parar por aqui.
+        </p>
+        <button class="spoiler__button" id="spoilerButton" type="button" aria-expanded="false" aria-controls="mangaStory" data-i18n="spoiler.btn">
+          Já li, mostrar
+        </button>
+      </div>
+
+      <div class="manga__story" id="mangaStory">
+        <div class="panels">
+          <article class="panel panel--wide">
+            <span class="panel__no">01</span>
+            <h3 class="panel__title" data-i18n="p1.h">Do outro lado do mundo</h3>
+            <p data-i18n="p1.p">
+              Depois do colégio, Hinata não ficou esperando uma chance aparecer. Ele embarcou
+              sozinho para o Brasil, um país com enorme tradição no vôlei, e foi viver o esporte
+              na areia, longe do time, da língua e de tudo o que conhecia.
+            </p>
+            <p class="panel__source" data-i18n="p1.src">Cap. 371 · 地球の裏側で (“No outro lado do mundo”)</p>
+          </article>
+
+          <article class="panel panel--dark">
+            <span class="panel__no">02</span>
+            <h3 class="panel__title" data-i18n="p2.h">Não foi uma passagem rápida</h3>
+            <p data-i18n="p2.p">
+              Hinata chegou ao Brasil mais de um ano e meio antes do capítulo 371 e só voltou
+              ao Japão em março de 2018. Foi tempo de sobra para errar, se perder e recomeçar.
+            </p>
+            <ul class="panel__list">
+              <li data-i18n="p2.l1">Teve dificuldade para jogar na areia.</li>
+              <li data-i18n="p2.l2">Trabalhou meio período em entregas, se perdeu e teve a carteira roubada.</li>
+              <li data-i18n="p2.l3">Teve dificuldade com o idioma e com a saudade de casa.</li>
+              <li data-i18n="p2.l4">Levantou a cabeça ao ver gente de todas as idades jogando na praia.</li>
+            </ul>
+          </article>
+
+          <article class="panel panel--accent">
+            <span class="panel__no">03</span>
+            <h3 class="panel__title" data-i18n="p3.h">“Ninja Shoyo”</h3>
+            <p data-i18n="p3.p">
+              Com o tempo, virou figura conhecida entre os jogadores de praia. Topava jogar com
+              qualquer parceiro, aprendeu com todos e ganhou até apelido. Foi assim que fez dupla
+              com o brasileiro Heitor Santana.
+            </p>
+          </article>
+        </div>
+
+        <h3 class="manga__subtitle" data-i18n="vs.title">Quadra <span>×</span> Praia</h3>
+        <div class="versus">
+          <div class="versus__col">
+            <h4 data-i18n="vs.court.h">Vôlei de quadra</h4>
+            <ul>
+              <li data-i18n="vs.court.l1">Seis jogadores de cada lado, cada um com sua função.</li>
+              <li data-i18n="vs.court.l2">Piso firme: o salto de Hinata é a arma principal.</li>
+              <li data-i18n="vs.court.l3">Levantador, bloqueadores e líbero: o jogo é coletivo e especializado.</li>
+              <li data-i18n="vs.court.l4">Jogo coberto e sem clima para atrapalhar.</li>
+            </ul>
+          </div>
+          <div class="versus__vs" aria-hidden="true">VS</div>
+          <div class="versus__col versus__col--sand">
+            <h4 data-i18n="vs.sand.h">Vôlei de praia</h4>
+            <ul>
+              <li data-i18n="vs.sand.l1">Só dois jogadores de cada lado: ninguém se esconde.</li>
+              <li data-i18n="vs.sand.l2">Areia que prende os pés e cansa as pernas.</li>
+              <li data-i18n="vs.sand.l3">Vento e sol mudam a bola e a escolha do lado da quadra.</li>
+              <li data-i18n="vs.sand.l4">Regras de toque rígidas: o “largadinha” só vale com a ponta dos dedos (<em>cobra</em>) ou os nós (<em>pokey</em>), e levantar por cima é arriscado.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="manga__subtitle" data-i18n="back.title">O que ele trouxe <span>de volta</span></h3>
+        <div class="panels panels--three">
+          <article class="panel">
+            <span class="panel__no">A</span>
+            <h3 class="panel__title" data-i18n="back.a.h">Jogo completo</h3>
+            <p data-i18n="back.a.p">
+              Na dupla, todo mundo recebe, defende, bloqueia e ataca. O Hinata, que antes vivia
+              do ataque, passou a se virar em todos os fundamentos.
+            </p>
+          </article>
+          <article class="panel">
+            <span class="panel__no">B</span>
+            <h3 class="panel__title" data-i18n="back.b.h">Leitura de jogo</h3>
+            <p data-i18n="back.b.p">
+              Nos duelos de dupla, ele provoca o adversário, se posiciona de um lado e corre para
+              o outro, como se já soubesse para onde a bola iria. É raciocínio, além de salto.
+            </p>
+          </article>
+          <article class="panel">
+            <span class="panel__no">C</span>
+            <h3 class="panel__title" data-i18n="back.c.h">Adaptação</h3>
+            <p data-i18n="back.c.p">
+              Vento, areia, idioma e parceiros diferentes: Hinata aprendeu a render em qualquer
+              condição e a ser grato por cada bola que recebe, o que pesa na volta à quadra.
+            </p>
+          </article>
+        </div>
+
+        <aside class="manga__why">
+          <h3 data-i18n="why.h">Por que o Brasil importa tanto</h3>
+          <p data-i18n="why.p">
+            Essa passagem não é um intervalo no meio da história: ocupa vários capítulos do
+            arco final e é contada com cuidado, com rotina, tropeços, amigos e até apelido. No
+            Brasil, Hinata aprende a se virar sozinho em um jogo de dois contra dois, e é essa
+            bagagem que ele leva de volta para a quadra.
+          </p>
+          <p class="manga__final" data-i18n="why.final">
+            Em março de 2018, ele volta ao Japão e vai atrás das equipes da V.League, começando
+            pelo MSBY Black Jackals.
+          </p>
+        </aside>
+
+        <h3 class="manga__subtitle" data-i18n="rival.title">Uma rivalidade <span>saudável</span></h3>
+        <div class="rival">
+          <div class="rival__team rival__team--jackals">
+            <p class="rival__who" data-i18n="rival.hinata">Hinata</p>
+            <h4>MSBY Black Jackals</h4>
+          </div>
+          <div class="versus__vs rival__vs" aria-hidden="true">VS</div>
+          <div class="rival__team rival__team--adlers">
+            <p class="rival__who" data-i18n="rival.kageyama">Kageyama</p>
+            <h4>Schweiden Adlers</h4>
+          </div>
+        </div>
+        <p class="rival__text" data-i18n="rival.p">
+          O Black Jackals, time em que Hinata entra, enfrenta na V.League o Schweiden Adlers,
+          onde Kageyama, seu antigo parceiro de Karasuno, joga como levantador titular. A dupla
+          que formava o famoso ataque rápido de Karasuno agora está em lados opostos da rede: cada
+          um quer vencer o outro, e cada um torce para o outro continuar evoluindo.
+        </p>
+
+        <p class="manga__source" data-i18n="manga.source">Referência: capítulos 371 (“No outro lado do mundo”), 376 (“Beach Volleyball”) e 377 (“Going Home!”) de Haikyū!!, de Haruichi Furudate.</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/i18n.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

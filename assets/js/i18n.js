@@ -88,8 +88,29 @@ const EN = {
   'rival.kageyama': 'Kageyama',
   'rival.p': 'The Black Jackals, the team Hinata joins, face the Schweiden Adlers in the V.League, where Kageyama, his old Karasuno partner, plays as the starting setter. The duo behind Karasuno\u2019s famous quick attack is now on opposite sides of the net: each wants to beat the other, and each hopes the other keeps getting better.',
 
+  'cast.eyebrow': 'Cast · キャラクター',
+  'cast.title': 'Meet the <span>characters</span>',
+  'cast.hint': 'Hover to peek, click to pin.',
+  'cast.nav': 'Schools and characters',
+  'menu.aria': 'Main menu',
+  'menu.toggle': 'Menu',
+  'menu.about': 'About',
+  'menu.cast': 'Characters',
+  'menu.clip': 'Anime',
+  'menu.manga': 'Hinata in Brazil',
+
   'manga.source': 'Reference: chapters 371 (\u201COn the Other Side of the World\u201D), 376 (\u201CBeach Volleyball\u201D) and 377 (\u201CGoing Home!\u201D) of Haikyū!!, by Haruichi Furudate.',
 };
+
+// Textos do elenco vêm de cast-data.js (carregado antes deste arquivo)
+CAST_SCHOOLS.forEach(school => {
+  EN[`cast.${school.id}.role`] = school.role.en;
+  EN[`cast.${school.id}.p`] = school.text.en;
+  school.chars.forEach(char => {
+    EN[`cast.${char.id}.role`] = char.role.en;
+    EN[`cast.${char.id}.p`] = char.text.en;
+  });
+});
 
 const STORAGE_KEY = 'haikyuu-lang';
 const ATTRIBUTES = [['data-i18n-alt', 'alt'], ['data-i18n-aria', 'aria-label']];

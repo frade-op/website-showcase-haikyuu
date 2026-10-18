@@ -11,6 +11,19 @@
   <!-- O texto em português fica no HTML; as traduções ficam em assets/js/i18n.js -->
   <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to English">EN</button>
 
+  <nav class="menu" id="menu" aria-label="Menu principal" data-i18n-aria="menu.aria" aria-hidden="true">
+    <button class="menu__toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="menuList" tabindex="-1">
+      <span data-i18n="menu.toggle">Menu</span>
+      <span class="menu__bars" aria-hidden="true"></span>
+    </button>
+    <ul class="menu__list" id="menuList">
+      <li><a class="menu__link" href="#about" data-section="about" tabindex="-1" data-i18n="menu.about">Sobre</a></li>
+      <li><a class="menu__link" href="#cast" data-section="cast" tabindex="-1" data-i18n="menu.cast">Personagens</a></li>
+      <li><a class="menu__link" href="#clip" data-section="clip" tabindex="-1" data-i18n="menu.clip">Anime</a></li>
+      <li><a class="menu__link" href="#manga" data-section="manga" tabindex="-1" data-i18n="menu.manga">Hinata no Brasil</a></li>
+    </ul>
+  </nav>
+
   <div class="scroll" id="scroll">
     <div class="viewport">
       <!-- Fundo: quadra e sombras -->
@@ -103,6 +116,22 @@
           </li>
         </ul>
       </article>
+    </div>
+  </section>
+
+  <section class="cast" id="cast" aria-labelledby="castTitle">
+    <div class="cast__inner">
+      <p class="cast__eyebrow" data-i18n="cast.eyebrow">Elenco · キャラクター</p>
+      <h2 class="cast__title" id="castTitle" data-i18n="cast.title">Conheça os <span>personagens</span></h2>
+      <p class="cast__hint" data-i18n="cast.hint">Passe o mouse para espiar, clique para fixar.</p>
+
+      <div class="cast__layout" id="castLayout">
+        <nav class="cast__nav" aria-label="Escolas e personagens" data-i18n-aria="cast.nav">
+          <!-- gerado por cast.js a partir de cast-data.js -->
+        </nav>
+
+        <div class="cast__stage" aria-live="polite"></div>
+      </div>
     </div>
   </section>
 
@@ -286,7 +315,10 @@
     </div>
   </section>
 
+  <script src="assets/js/cast-data.js"></script>
+  <script src="assets/js/cast.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/menu.js"></script>
 </body>
 </html>

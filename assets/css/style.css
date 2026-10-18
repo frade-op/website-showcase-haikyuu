@@ -371,6 +371,191 @@ html {
 }
 
 /* ==========================================================================
+   Seção "Elenco" – seletor de escolas/personagens + conteúdo
+   ========================================================================== */
+
+.cast {
+  position: relative;
+  padding: clamp(72px, 10vw, 140px) clamp(16px, 4vw, 24px);
+  color: #0b0b0d;
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.13) 1.2px, transparent 1.6px) 0 0 / 14px 14px,
+    #f6f2e8;
+  border-top: 8px solid #0b0b0d;
+}
+
+.cast__inner { max-width: 1040px; margin: 0 auto; }
+
+.cast__eyebrow {
+  margin-bottom: 12px;
+  color: #c95a0a;
+  font: 700 13px/1 system-ui, sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.cast__title {
+  margin-bottom: 12px;
+  font: 800 clamp(30px, 6vw, 56px)/1.05 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.cast__title span { color: #c95a0a; }
+
+.cast__hint {
+  margin-bottom: clamp(24px, 4vw, 44px);
+  text-align: center;
+  font: 500 14px/1.4 system-ui, sans-serif;
+  opacity: 0.65;
+}
+
+.cast__layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: clamp(16px, 3vw, 32px);
+  align-items: start;
+}
+
+.cast__nav,
+.cast__stage {
+  background: #fffdf6;
+  border: 3px solid #0b0b0d;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #f47a1f;
+}
+
+.cast__nav { padding: 10px; }
+
+.cast__item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-left: 4px solid transparent;
+  font: 700 16px/1.2 system-ui, sans-serif;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.cast__item--school { text-transform: uppercase; letter-spacing: 0.08em; }
+.cast__item--char { padding-left: 28px; font-weight: 600; }
+
+.cast__item:hover,
+.cast__item:focus-visible {
+  background: rgba(244, 122, 31, 0.18);
+  border-left-color: rgba(244, 122, 31, 0.7);
+  outline: none;
+}
+
+.cast__item.is-active {
+  background: #f47a1f;
+  border-left-color: #0b0b0d;
+  color: #0b0b0d;
+}
+
+.cast__chevron { transition: transform 0.25s ease; }
+.cast__school.is-open .cast__chevron { transform: rotate(180deg); }
+
+.cast__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: none;
+}
+
+.cast__school.is-open .cast__list { display: block; }
+
+.cast__stage {
+  position: sticky;
+  top: 24px;
+  min-height: 360px;
+  padding: clamp(20px, 3vw, 36px);
+}
+
+.cast__panel {
+  display: none;
+  grid-template-columns: auto 1fr;
+  column-gap: clamp(16px, 3vw, 32px);
+  align-content: center;
+  align-items: center;
+  font: 400 16px/1.6 system-ui, sans-serif;
+}
+
+.cast__panel.is-visible {
+  display: grid;
+  animation: castIn 0.3s ease;
+}
+
+/* Texto sempre na coluna da direita, agrupado e centralizado ao lado da imagem */
+.cast__panel > :not(.cast__img) {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.cast__panel.is-visible:has(.cast__img) {
+  grid-template-rows: 1fr auto auto auto 1fr;
+}
+
+.cast__name { grid-row: 2; }
+.cast__role { grid-row: 3; }
+.cast__panel > p:not(.cast__role) { grid-row: 4; }
+
+/* Caixa fixa: imagens altas e estreitas não esticam o painel */
+.cast__img {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  align-self: center;
+  width: clamp(140px, 20vw, 240px);
+  height: clamp(280px, 40vw, 420px);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.cast__name {
+  font: 800 clamp(26px, 4vw, 40px)/1.1 system-ui, sans-serif;
+  text-transform: uppercase;
+}
+
+.cast__role {
+  margin-bottom: 12px;
+  color: #c95a0a;
+  font: 700 13px/1.2 system-ui, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.cast__panel > p:not(.cast__role) { margin: 0; }
+.cast__panel:not(:has(.cast__img)) { display: none; }
+.cast__panel:not(:has(.cast__img)).is-visible { display: block; }
+
+@keyframes castIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 760px) {
+  .cast__layout { grid-template-columns: 1fr; }
+  .cast__panel.is-visible,
+  .cast__panel.is-visible:has(.cast__img) { grid-template-columns: 1fr; grid-template-rows: none; justify-items: start; }
+  .cast__panel > :not(.cast__img) { grid-column: 1; grid-row: auto; }
+  .cast__panel > p:not(.cast__role) { grid-row: auto; }
+  .cast__img { grid-row: auto; margin-bottom: 12px; height: 320px; }
+  .cast__stage { min-height: 0; position: relative; top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cast__panel.is-visible { animation: none; }
+}
+
+/* ==========================================================================
    Seção "Cena" – trecho do anime em moldura de câmera
    ========================================================================== */
 
@@ -964,6 +1149,148 @@ html {
   margin-inline: auto;
   font: 500 17px/1.7 system-ui, sans-serif;
   text-align: center;
+}
+
+/* ---------- Menu ---------- */
+
+.menu {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  right: 86px;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-140%);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.menu.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.menu__list {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  list-style: none;
+  background: #0b0b0d;
+  border: 3px solid #f47a1f;
+  box-shadow: 4px 4px 0 #0b0b0d;
+}
+
+.menu__list::-webkit-scrollbar { display: none; }
+
+.menu__link {
+  display: block;
+  padding: 11px 16px;
+  color: #f6f2e8;
+  font: 800 13px/1 system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.menu__link:hover,
+.menu__link:focus-visible,
+.menu__link[aria-current] {
+  background: #f47a1f;
+  color: #0b0b0d;
+  outline: none;
+}
+
+html { scroll-behavior: smooth; }
+
+.menu__toggle { display: none; }
+
+/* Celular: botão "Menu" abre uma lista suspensa */
+@media (max-width: 760px) {
+  .menu { right: auto; }
+
+  .menu__toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 52px;
+    padding: 10px 14px;
+    border: 3px solid #f47a1f;
+    background: #0b0b0d;
+    color: #f6f2e8;
+    font: 900 14px/1 system-ui, sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 #0b0b0d;
+  }
+
+  .menu__toggle:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+  }
+
+  .menu__bars,
+  .menu__bars::before,
+  .menu__bars::after {
+    display: block;
+    width: 18px;
+    height: 3px;
+    background: #f47a1f;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .menu__bars { position: relative; }
+  .menu__bars::before,
+  .menu__bars::after { content: ''; position: absolute; left: 0; }
+  .menu__bars::before { top: -6px; }
+  .menu__bars::after { top: 6px; }
+
+  .menu.is-open .menu__bars { background: transparent; }
+  .menu.is-open .menu__bars::before { top: 0; transform: rotate(45deg); }
+  .menu.is-open .menu__bars::after { top: 0; transform: rotate(-45deg); }
+
+  .menu__list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    flex-direction: column;
+    width: max-content;
+    min-width: 220px;
+    max-width: calc(100vw - 28px);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    box-shadow: 6px 6px 0 rgba(244, 122, 31, 0.35);
+  }
+
+  .menu.is-open .menu__list {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .menu__link {
+    padding: 15px 18px;
+    border-left: 5px solid transparent;
+  }
+
+  .menu__link + .menu__link,
+  .menu__list li + li .menu__link { border-top: 1px solid rgba(246, 242, 232, 0.12); }
+
+  .menu__link[aria-current] { border-left-color: #0b0b0d; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .menu { transition: none; }
+  .menu__list, .menu__bars, .menu__bars::before, .menu__bars::after { transition: none; }
 }
 
 /* ---------- Botão de idioma ---------- */

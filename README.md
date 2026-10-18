@@ -1,6 +1,6 @@
 # Haikyuu!! — Showcase
 
-Uma página de fã sobre *Haikyuu!!*, feita para praticar animações acionadas pela rolagem. A experiência atual apresenta uma jogada de Kageyama e Hinata e, abaixo dela, uma breve introdução à série.
+Uma página de fã sobre *Haikyuu!!*, feita para praticar animações acionadas pela rolagem. A experiência apresenta uma jogada de Kageyama e Hinata e, abaixo dela, as seções Sobre, Personagens, Anime e Hinata no Brasil, com um menu de navegação que aparece após o banner.
 
 ## Como visualizar
 
@@ -21,11 +21,25 @@ Abrir o `index.html` direto continua funcionando para o banner e a seção "Sobr
 
 ## Estrutura
 
-- `index.html`: marcação da cena animada e das seções (Sobre, Cena, Mangá).
+- `index.html`: marcação da cena animada, do menu e das seções, na ordem: Banner, Sobre, Personagens, Anime (Cena), Hinata no Brasil (Mangá).
 - `assets/css/style.css`: composição visual, camadas, layout responsivo e estilos das seções.
 - `assets/js/main.js`: animação da jogada, sincronizada com a rolagem, e interações das seções.
+- `assets/js/menu.js`: exibição do menu após o banner e destaque da seção atual.
+- `assets/js/cast-data.js`: dados das escolas e personagens (PT/EN, imagem).
+- `assets/js/cast.js`: monta o seletor de personagens a partir de `cast-data.js`.
 - `assets/js/i18n.js`: troca de idioma (PT/EN).
+- `tests/`: testes automatizados (veja [Testes](#testes)).
 - `Images/`: imagens usadas na cena, nos elementos decorativos e o favicon.
+
+## Testes
+
+Sem dependências; requer apenas Node.js:
+
+```powershell
+node --test tests/cast-data.test.js
+```
+
+Validam ids únicos, textos PT/EN, imagens existentes e sem repetição, a ordem das seções, a ordem de carregamento dos scripts e as traduções do menu. O layout (desktop e celular), o hover/clique e a exibição do menu foram conferidos manualmente no navegador.
 
 ## Comportamento e efeitos
 
@@ -42,6 +56,21 @@ Abrir o `index.html` direto continua funcionando para o banner e a seção "Sobr
 - **Quique constante:** animação `bounce` (2,4 s, cerca de 14 px de altura) que imita uma bola quicando, defasada entre as figurinhas.
 - **Celular (até 1300px):** as figurinhas ficam em duas linhas (topo e rodapé) e o texto desce para não cobri-las; até 600px elas ficam menores.
 - **Acessibilidade:** com `prefers-reduced-motion` ativo, quique e transições são desligados.
+
+### Menu
+
+- Barra fixa no topo com Sobre, Personagens, Anime e Hinata no Brasil (`#menu`, `assets/js/menu.js`).
+- Fica oculta durante o banner e desliza para baixo quando a animação termina (fim de `.scroll`). Oculta, usa `aria-hidden` e os links saem da ordem de tabulação.
+- Rolagem suave até a seção e destaque (`aria-current`) da seção visível.
+- **Celular (até 760px):** vira um dropdown. O botão “Menu” (ícone de hambúrguer que vira “X”) abre a lista suspensa, no mesmo estilo do site (preto, borda e sombra laranja). Fecha ao escolher um item, clicar fora ou apertar `Esc`; usa `aria-expanded`.
+
+### Personagens (seção "Personagens")
+
+- **Estilo:** tema claro (papel pontilhado), alternando com as seções escuras: Banner, Sobre (escuro), Personagens (claro), Anime (escuro), Hinata no Brasil (claro).
+- **Layout:** no desktop, seletor de escolas à esquerda (cada escola expande para seus personagens) e conteúdo à direita, com imagem de um lado e título, função e descrição agrupados do outro. O painel fica fixo ao rolar. No celular (até 760px) tudo empilha em coluna única e, ao clicar, a tela rola até o conteúdo.
+- **Interação:** passar o mouse (ou focar com o teclado) mostra uma prévia; o clique fixa o conteúdo, que permanece ao tirar o mouse. Clicar em uma escola também abre/fecha a lista.
+- **Escolas atuais:** Karasuno, Nekoma, Aoba Johsai e Shiratorizawa.
+- **Dados:** tudo fica em `assets/js/cast-data.js`. Para adicionar uma escola ou personagem, inclua um objeto lá (`id`, `name`, `img`, `role` e `text` com `pt` e `en`) e coloque a imagem em `Images/`. As imagens são caixas de altura fixa (`object-fit: contain`), então aceitam proporções diferentes. As traduções em inglês são lidas automaticamente por `i18n.js`, por isso `cast-data.js` e `cast.js` carregam antes dele.
 
 ### Trecho do anime (seção "Cena")
 
